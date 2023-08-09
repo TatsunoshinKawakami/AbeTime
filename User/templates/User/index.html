@@ -1,0 +1,12 @@
+{% extends "User/base.html" %}
+
+{% block content %}
+  <div class="d-flex flex-column align-items-center mx-auto mt-2">
+    <p>{{ today }}</p>
+    <form class="d-flex flex-column align-items-center" method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <input type="submit" class="btn btn-primary" value="送信">
+    </form>
+  </div>
+{% endblock content %}

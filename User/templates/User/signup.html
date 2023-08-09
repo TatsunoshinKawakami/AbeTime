@@ -1,0 +1,9 @@
+{% extends 'User/base.html' %}
+
+{% block content %}
+<form class="mt-2 mx-auto d-flex flex-column" method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <input type="submit" class="btn btn-primary mx-auto" value="登録">
+</form>
+{% endblock content %}
