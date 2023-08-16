@@ -2,14 +2,20 @@
 
 {% block content %}
   <div class="d-flex flex-column align-items-center mx-auto mt-2">
+    {% if log != None %}
+    <h6>この日はすでに記録されています</h6>
+    {% endif %}
     <p>
-      <a href="{% url 'User:date' previous_date.year previous_date.month previous_date.day %}"><i class="bi bi-arrow-left-short mx-3"></i></a>
-      {{ today }}
-    </p>
+        <a href="{% url 'User:date' previous_date.year previous_date.month previous_date.day %}"><i class="bi bi-arrow-left-short mx-3"></i></a>
+        {{ this_date }}
+        {% if is_safe_date %}
+        <a href="{% url 'User:date' next_date.year next_date.month next_date.day %}"><i class="bi bi-arrow-right-short mx-3"></i></a>
+        {% endif %}
+      </p>
     <form class="d-flex flex-column align-items-center" method="post">
       {% csrf_token %}
       <p>
-        <input type="radio" id="state1" class="btn-check" name="state" value="0" checked>
+        <input type="radio" id="state1" class="btn-check" name="state" value="0">
         <label class="btn btn-outline-primary" for="state1">◯</label>
         <input type="radio" id="state2" class="btn-check" name="state" value="1">
         <label class="btn btn-outline-primary" for="state2">△</label>
@@ -24,4 +30,13 @@
     </form>
     <a type="button" class="btn btn-secondary mt-5" href="">別日の入力を確認</a>
   </div>
+  {% if log != None %}
+  <script>
+    const state_selector = document.getElementsByName('state')[{{log.state | safe}}];
+    state_selector.checked = true;
+
+    const location_input = document.getElementsByName('location')[0]
+    location_input.value = '{{log.location | safe}}'
+  </script>
+  {% endif %}
 {% endblock content %}

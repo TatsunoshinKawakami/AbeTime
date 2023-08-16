@@ -6,7 +6,7 @@ class AbeUser(AbstractUser):
     pass
 
 class Log(models.Model):
-    date = models.DateField(auto_now=True)
+    date = models.DateField()
     state = models.IntegerField(default=0)
     location = models.CharField(max_length=300, null=True, blank=True)
     user = models.ForeignKey(AbeUser, on_delete=models.CASCADE)
