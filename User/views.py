@@ -16,7 +16,7 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth import login
 from django.utils import timezone
 
-from .forms import SignupForm, LogForm
+from .forms import SignupForm, LogForm, DateSelectForm
 from .models import AbeUser, Log
 from datetime import date, datetime, timedelta
 
@@ -71,6 +71,19 @@ class DateView(LoginRequiredMixin, FormView):
         ctx['log'] = Log.objects.filter(user=self.request.user, date=this_date).first()
 
         return ctx
+    
+class DateSelectView(FormView):
+    template_name = 'User/date_select.html'
+    form_class = DateSelectForm
+
+    def form_valid(self, form):
+        year = form.cleaned_data['year']
+        month = form.cleaned_data['month']
+        day = form.cleaned_data['day']
+
+        self.success_url = reverse_lazy('User:date', kwargs={'year': year, 'month': month, 'day': day})
+
+        return super().form_valid(form)
     
 class AbeSignUpView(CreateView):
     template_name = 'User/signup.html'

@@ -28,7 +28,7 @@
       </p>
       <input type="submit" class="btn btn-primary" value="送信">
     </form>
-    <a type="button" class="btn btn-secondary mt-5" href="">別日の入力を確認</a>
+    <a type="button" class="btn btn-secondary mt-5" href="{% url 'User:date-select' %}">別日の入力を確認</a>
   </div>
   {% if log != None %}
   <script>
