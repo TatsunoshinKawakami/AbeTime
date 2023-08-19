@@ -2,8 +2,10 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils import timezone
 
+
 class AbeUser(AbstractUser):
-    pass
+    is_guest = models.BooleanField(default=False)
+
 
 class Log(models.Model):
     date = models.DateField()
@@ -13,8 +15,5 @@ class Log(models.Model):
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(
-                fields=["user", "date"],
-                name="log_unique"
-            ),
+            models.UniqueConstraint(fields=["user", "date"], name="log_unique"),
         ]

@@ -1,0 +1,46 @@
+{% extends 'User/base.html' %} {% block content %}
+<div class="table-responsive mt-2">
+  <table class="table table-sm align-middle">
+    <thead>
+      <tr>
+        <th class="col-2">
+          <a href="{% url 'Manager:date' pre_date_start.year pre_date_start.month pre_date_start.day %}"><i class="bi bi-arrow-left-short"></i></a>{{ date_start.year }}/{{ date_start.month }}/{{ date_start.day }}~{{date_end.year }}/{{ date_end.month }}/{{ date_end.day }}
+        </th>
+        {% for user in users %}
+        <th>{{ user.username }}</th>
+        {% endfor %}
+      </tr>
+    </thead>
+    {% for date, logs in date_logs %}
+    <tr>
+      <td>{{ date.year }}/{{ date.month }}/{{ date.day }}</td>
+      {% for log in logs %}
+      <td>
+        {% if log.state == 0 %}
+        <p class="my-1">◯</p>
+        {% elif log.state == 1 %}
+        <p class="my-1">△</p>
+        {% elif log.state == 2 %}
+        <p class="my-1">✕</p>
+        {% else %}
+        <p></p>
+        {% endif %} {% if log.location %}
+        <p class="small my-1">{{ log.location }}</p>
+        {% else %}
+        <p></p>
+        {% endif %}
+      </td>
+      {% endfor %}
+    </tr>
+    {% endfor %}
+    <tfoot>
+      <tr>
+        <th class="col-2">{{ date_start.year }}/{{ date_start.month }}/{{ date_start.day }}~{{ date_end.year }}/{{ date_end.month }}/{{ date_end.day }}</th>
+        {% for user in users %}
+        <th>{{ user.username }}</th>
+        {% endfor %}
+      </tr>
+    </tfoot>
+  </table>
+</div>
+{% endblock %}

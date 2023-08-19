@@ -129,5 +129,3 @@ AUTH_USER_MODEL = 'User.AbeUser'
 LOGIN_URL = "User:login"
 LOGIN_REDIRECT_URL = "User:index"
 LOGOUT_REDIRECT_URL = "User:login"
-
-DATE_FORMAT = "%Y %m %d"

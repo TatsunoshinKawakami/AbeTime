@@ -1,5 +1,5 @@
 from typing import Any, Dict
-from django.http import HttpResponse
+from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
@@ -27,6 +27,12 @@ class IndexView(LoginRequiredMixin, FormView):
     form_class = LogForm
     success_url = reverse_lazy("User:index")
 
+    def get(self, request, *args, **kwargs):
+        if self.request.user.is_staff:
+            return redirect(reverse_lazy('Manager:index'))
+        
+        return super().get(request, *args, **kwargs)
+
     def form_valid(self, form):
         state = form.cleaned_data['state']
         location = form.cleaned_data['location']
@@ -41,6 +47,8 @@ class IndexView(LoginRequiredMixin, FormView):
         ctx['today'] = f"{today.year}/{today.month}/{today.day}"
         ctx['previous_date'] = today - timedelta(days=1)
 
+        ctx['log'] = Log.objects.filter(user=self.request.user, date=timezone.now().date()).first()
+
         return ctx
     
 class DateView(LoginRequiredMixin, FormView):
@@ -53,7 +61,6 @@ class DateView(LoginRequiredMixin, FormView):
         state = form.cleaned_data['state']
         location = form.cleaned_data['location']
         this_date = datetime.strptime(str(self.kwargs.get('year'))+'-'+str(self.kwargs.get('month'))+'-'+str(self.kwargs.get('day')), '%Y-%m-%d').date()
-        print(Log.objects.filter(user=self.request.user, date=this_date).first())
         
         Log.objects.update_or_create(user=self.request.user, date=this_date, defaults={'state':state, 'location':location})
 
