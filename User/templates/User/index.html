@@ -1,37 +1,35 @@
-{% extends "User/base.html" %}
-
-{% block content %}
-  <div class="d-flex flex-column align-items-center mx-auto mt-2">
-    {% if log != None %}
-    <h6>今日はすでに記録されています</h6>
-    {% endif %}
+{% extends "User/base.html" %} {% block content %}
+<div class="d-flex flex-column align-items-center mx-auto mt-2">
+  {% if log != None %}
+  <h6>今日はすでに記録されています</h6>
+  {% endif %}
+  <p>
+    <a href="{% url 'User:date' previous_date.year previous_date.month previous_date.day %}"><i class="bi bi-arrow-left-short mx-3"></i></a>
+    {{ today }}
+  </p>
+  <form class="d-flex flex-column align-items-center" method="post">
+    {% csrf_token %}
     <p>
-      <a href="{% url 'User:date' previous_date.year previous_date.month previous_date.day %}"><i class="bi bi-arrow-left-short mx-3"></i></a>
-      {{ today }}
+      <input type="radio" id="state1" class="btn-check" name="state" value="0" checked />
+      <label class="btn btn-outline-primary" for="state1">◯</label>
+      <input type="radio" id="state2" class="btn-check" name="state" value="1" />
+      <label class="btn btn-outline-primary" for="state2">△</label>
+      <input type="radio" id="state3" class="btn-check" name="state" value="2" />
+      <label class="btn btn-outline-primary" for="state3">✕</label>
     </p>
-    <form class="d-flex flex-column align-items-center" method="post">
-      {% csrf_token %}
-      <p>
-        <input type="radio" id="state1" class="btn-check" name="state" value="0" checked>
-        <label class="btn btn-outline-primary" for="state1">◯</label>
-        <input type="radio" id="state2" class="btn-check" name="state" value="1">
-        <label class="btn btn-outline-primary" for="state2">△</label>
-        <input type="radio" id="state3" class="btn-check" name="state" value="2">
-        <label class="btn btn-outline-primary" for="state3">✕</label>
-      </p>
-      <p>
-        <label for="id_location">現場名:</label>
-        <input type="text" name="location" class="form-control" maxlength="300" id="id_location">
-      </p>
-      <input type="submit" class="btn btn-primary" value="送信">
-    </form>
-    <a type="button" class="btn btn-secondary mt-5" href="{% url 'User:date-select' %}">別日の入力を確認</a>
-  </div>
-  <script>
-    const state_selector = document.getElementsByName('state')[{{log.state | safe}}];
-    state_selector.checked = true;
+    <p>
+      <label for="id_location">現場名:</label>
+      <input type="text" name="location" class="form-control" maxlength="300" id="id_location" />
+    </p>
+    <input type="submit" class="btn btn-primary" value="送信" />
+  </form>
+  <a type="button" class="btn btn-secondary mt-5" href="{% url 'User:date-select' %}">別日の入力を確認</a>
+</div>
+<script>
+  const state_selector = document.getElementsByName('state')[{{log.state | safe}}];
+  state_selector.checked = true;
 
-    const location_input = document.getElementsByName('location')[0]
-    location_input.value = '{{log.location | safe}}'
-  </script>
+  const location_input = document.getElementsByName('location')[0]
+  location_input.value = '{{log.location | safe}}'
+</script>
 {% endblock content %}
