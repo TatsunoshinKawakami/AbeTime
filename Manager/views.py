@@ -117,18 +117,45 @@ class ManagerDateView(LoginRequiredMixin, TemplateView):
         ctx['next_date_start'] = date_start + relativedelta(months=1)
         if date_end < timezone.now().today().date():
             ctx['is_safe_date'] = True
+
+        counts = []
+        map_time = [1, 0.5, 0]
+        for user in users:
+            counts.append(sum([map_time[x.state] for x in Log.objects.filter(user=user, date__range=[date_start, date_end])]))
+        ctx['counts'] = counts
         
+        choices = [(0, '◯'), ('1', '△'), ('2', '✕'), ('3', '---')]
         date_logs = []
         for i in range((date_end - date_start).days + 1):
             logs = []
             for user in users:
                 log = Log.objects.filter(user=user, date=date_start).first()
+                form = forms.Form()
                 if log == None:
-                    logs.append(Log(state=4))
+                    form.fields['state_' + user.username + '_' + str(date_start)] = forms.ChoiceField(widget=forms.widgets.Select(attrs={'class': 'form-control', 'style': 'font-size: 0.8em'}), label='', choices=choices, initial=3)
+                    form.fields['location_' + user.username + '_' + str(date_start)] = forms.CharField(widget=forms.widgets.TextInput(attrs={'class': 'form-control', 'style': 'font-size: 0.8em'}), label='', required=False)
+                    logs.append(form)
                 else:
-                    logs.append(log)
+                    form.fields['state_' + user.username + '_' + str(date_start)] = forms.ChoiceField(widget=forms.widgets.Select(attrs={'class': 'form-control', 'style': 'font-size: 0.8em'}), label='', choices=choices, initial=log.state)
+                    form.fields['location_' + user.username + '_' + str(date_start)] = forms.CharField(widget=forms.widgets.TextInput(attrs={'class': 'form-control', 'style': 'font-size: 0.8em'}), label='', required=False, initial=log.location)
+                    logs.append(form)
             date_logs.append((date_start, logs))
             date_start = date_start + datetime.timedelta(days=1)
         ctx['date_logs'] = date_logs
 
         return ctx
+    
+    def post(self, request, *args, **kwargs):
+        date_start = datetime.datetime.strptime(str(self.kwargs.get('year'))+'-'+str(self.kwargs.get('month'))+'-'+str(self.kwargs.get('day')), '%Y-%m-%d').date()
+        date_end = date_start + relativedelta(months=1) - datetime.timedelta(days=1)
+        date_tmp = date_start
+
+        for i in range((date_end - date_start).days + 1):
+            for user in AbeUser.objects.filter(is_staff=False).order_by('id'):
+                state = int(request.POST.get('state_' + user.username + '_' + str(date_tmp)))
+                location = request.POST.get('location_' + user.username + '_' + str(date_tmp))
+                if state != 3:
+                    Log.objects.update_or_create(user=user, date=date_tmp, defaults={'state':state, 'location':location})
+            date_tmp = date_tmp + datetime.timedelta(days=1)
+            
+        return redirect(reverse_lazy('Manager:date', kwargs={'year': date_start.year, 'month': date_start.month, 'day': date_start.day}))

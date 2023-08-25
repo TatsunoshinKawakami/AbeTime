@@ -1,10 +1,13 @@
 {% extends 'User/base.html' %} {% block content %}
-<div class="table-responsive mt-2">
+<form method="post" class="table-responsive d-flex flex-column mt-2">
+  {% csrf_token %}
+  <input type="submit" class="btn btn-primary w-75 my-3 mx-auto" value="更新" />
   <table class="table table-sm align-middle">
     <thead>
       <tr>
         <th class="col-2">
-          <a href="{% url 'Manager:date' pre_date_start.year pre_date_start.month pre_date_start.day %}"><i class="bi bi-arrow-left-short"></i></a>{{ date_start.year }}/{{ date_start.month }}/{{ date_start.day }}~{{ date_end.year }}/{{ date_end.month }}/{{ date_end.day }} {% if is_safe_date %}
+          <a href="{% url 'Manager:date' pre_date_start.year pre_date_start.month pre_date_start.day %}"><i class="bi bi-arrow-left-short"></i></a>{{ date_start.year }}/{{ date_start.month }}/{{ date_start.day }}~{{date_end.year }}/{{ date_end.month }}/{{ date_end.day }}
+          {% if is_safe_date %}
           <a href="{% url 'Manager:date' next_date_start.year next_date_start.month next_date_start.day %}"><i class="bi bi-arrow-right-short"></i></a>
           {% endif %}
         </th>
@@ -18,22 +21,16 @@
       <td>{{ date.year }}/{{ date.month }}/{{ date.day }}</td>
       {% for log in logs %}
       <td>
-        {% if log.state == 0 %}
-        <p class="my-1">◯</p>
-        {% elif log.state == 1 %}
-        <p class="my-1">△</p>
-        {% elif log.state == 2 %}
-        <p class="my-1">✕</p>
-        {% else %}
-        <p></p>
-        {% endif %} {% if log.location %}
-        <p class="small my-1">{{ log.location }}</p>
-        {% else %}
-        <p></p>
-        {% endif %}
+        {% for field in log %}
+        <p class="my-1">{{ field }}</p>
+        {% endfor %}
       </td>
       {% endfor %}
     </tr>
+    {% endfor %}
+    <td>合計</td>
+    {% for count in counts %}
+    <td>{{count}}</td>
     {% endfor %}
     <tfoot>
       <tr>
@@ -44,5 +41,6 @@
       </tr>
     </tfoot>
   </table>
-</div>
+  <input type="submit" class="btn btn-primary w-75 mx-auto" value="更新" />
+</form>
 {% endblock %}
