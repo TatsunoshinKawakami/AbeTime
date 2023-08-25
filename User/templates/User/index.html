@@ -25,6 +25,7 @@
   </form>
   <a type="button" class="btn btn-secondary mt-5" href="{% url 'User:date-select' %}">別日の入力を確認</a>
 </div>
+{% if log %}
 <script>
   const state_selector = document.getElementsByName('state')[{{log.state | safe}}];
   state_selector.checked = true;
@@ -32,4 +33,5 @@
   const location_input = document.getElementsByName('location')[0]
   location_input.value = '{{log.location | safe}}'
 </script>
+{% endif %}
 {% endblock content %}

@@ -1,0 +1,21 @@
+{
+  "background_color": "#1f1f1f",
+  "description": "安部板金勤務表",
+  "display": "standalone",
+  "theme_color": "aliceblue",
+  "icons": [
+    {
+      "src": "icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "name": "安部板金勤務表",
+  "short_name": "安部板金勤務表",
+  "start_url": "http://127.0.0.1:8000"
+}
