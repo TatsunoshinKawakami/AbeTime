@@ -1,6 +1,6 @@
 from django import forms
 from .models import Log, AbeUser
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UsernameField
 from django.utils import timezone
 
 choices = [('0', '◯'), ('1', '△'), ('2', '✕')]
@@ -14,10 +14,17 @@ class DateSelectForm(forms.Form):
     month = forms.ChoiceField(widget=forms.widgets.Select(attrs={'class': 'form-control'}), choices=[(m, str(m)+'月') for m in range(1, 13)], initial=timezone.now().month)
     day = forms.ChoiceField(widget=forms.widgets.Select(attrs={'class': 'form-control'}), choices=[(d, str(d)+'日') for d in range(1, 32)], initial=timezone.now().day)
 
-class SignupForm(UserCreationForm):
-    class Meta:
-        model = AbeUser
-        fields = ['username', 'password1', 'password2']
-
 class LoginForm(AuthenticationForm):
-    pass
+    username = UsernameField(widget=forms.TextInput(attrs={"autofocus": True, 'class': 'form-control'}), label='ユーザー名')
+    password = forms.CharField(
+        label=("パスワード"),
+        strip=False,
+        widget=forms.PasswordInput(attrs={"autocomplete": "current-password", 'class': 'form-control'}),
+    )
+
+    error_messages = {
+        "invalid_login": (
+            "ユーザー名、またはパスワードが間違っています"
+        ),
+        "inactive": ("このアカウントは使用できません"),
+    }
