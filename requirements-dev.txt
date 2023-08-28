@@ -1,0 +1,15 @@
+asgiref @ file:///C:/Users/BUILDE~1/AppData/Local/Temp/abs_cchykh5sgr/croots/recipe/asgiref_1661287542702/work
+certifi @ file:///C:/b/abs_36eb5mzhph/croot/certifi_1690232276943/work/certifi
+click @ file:///C:/ci/click_1646038595831/work
+colorama @ file:///C:/b/abs_a9ozq0l032/croot/colorama_1672387194846/work
+Django @ file:///C:/Users/BUILDE~1/AppData/Local/Temp/abs_eeor5o9jj8/croots/recipe/django_1661292534510/work
+django-environ==0.10.0
+joblib @ file:///C:/b/abs_e60_bwl1v6/croot/joblib_1666298845728/work
+nltk @ file:///opt/conda/conda-bld/nltk_1645628263994/work
+python-dateutil @ file:///tmp/build/80754af9/python-dateutil_1626374649649/work
+regex @ file:///C:/ci/regex_1658258307256/work
+six @ file:///tmp/build/80754af9/six_1644875935023/work
+sqlparse @ file:///C:/b/abs_83jn6owfpc/croot/sqlparse_1668793499314/work
+tqdm @ file:///C:/b/abs_f76j9hg7pv/croot/tqdm_1679561871187/work
+tzdata @ file:///tmp/build/80754af9/python-tzdata_1611693927741/work
+wincertstore==0.2
