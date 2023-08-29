@@ -1,4 +1,6 @@
+from typing import Any, Mapping, Optional, Type, Union
 from django import forms
+from django.forms.utils import ErrorList
 from User.models import AbeUser
 from django.contrib.auth.forms import UserCreationForm
 
@@ -22,3 +24,7 @@ class SignupForm(UserCreationForm):
 
 class DeleteUserSelectForm(forms.Form):
     users = forms.ChoiceField(widget=forms.widgets.Select(attrs={'class': 'form-control'}), label='削除するユーザー')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['users'].choices = [(x.pk, x.username) for x in AbeUser.objects.filter(is_staff=False)]
