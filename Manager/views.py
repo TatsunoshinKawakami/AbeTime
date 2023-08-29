@@ -322,7 +322,6 @@ class AbeUserDeleteView(LoginRequiredMixin, FormView):
             return redirect(reverse_lazy("User:index"))
         
         user = AbeUser.objects.filter(id=form.cleaned_data['users']).first()
-        print('usersの取得できた')
         if user != None:
             user.delete()
 
