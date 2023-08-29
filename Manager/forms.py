@@ -21,4 +21,4 @@ class SignupForm(UserCreationForm):
        fields = ("username", "password1", "password2",)
 
 class DeleteUserSelectForm(forms.Form):
-    users = forms.ChoiceField(widget=forms.widgets.Select(attrs={'class': 'form-control'}), label='削除するユーザー', choices=[(x.pk, x.username) for x in AbeUser.objects.filter(is_staff=False)])
+    users = forms.ChoiceField(widget=forms.widgets.Select(attrs={'class': 'form-control'}), label='削除するユーザー')

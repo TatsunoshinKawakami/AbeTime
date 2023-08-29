@@ -133,7 +133,7 @@ class ManagerIndexView(LoginRequiredMixin, TemplateView):
         date_end: datetime.date
         today = datetime.date.today()
         if today.day > 25:
-            date_start = datetime.datetime(
+            date_start = datetime.datetime.strptime(
                 f"{today.year}-{today.month}-26", "%Y-%m-%d"
             ).date()
             date_end = date_start + relativedelta(months=1) - datetime.timedelta(days=1)
@@ -326,3 +326,9 @@ class AbeUserDeleteView(LoginRequiredMixin, FormView):
             user.delete()
 
         return super().form_valid(form)
+    
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx['form'].fields['users'].choices = [(x.pk, x.username) for x in AbeUser.objects.filter(is_staff=False)]
+
+        return ctx

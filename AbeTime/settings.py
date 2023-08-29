@@ -131,6 +131,7 @@ LOGIN_URL = "User:login"
 LOGIN_REDIRECT_URL = "User:index"
 LOGOUT_REDIRECT_URL = "User:login"
 
+STATIC_ROOT = "/home/ubuntu/AbeTime/deploy/"
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
