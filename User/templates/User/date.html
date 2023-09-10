@@ -12,7 +12,7 @@
         <a href="{% url 'User:date' next_date.year next_date.month next_date.day %}"><i class="bi bi-arrow-right-short mx-3"></i></a>
         {% endif %}
       </p>
-    <form class="d-flex flex-column align-items-center" method="post">
+    <form class="d-flex flex-column align-items-center" id="log_form" method="post">
       {% csrf_token %}
       <p>
         <input type="radio" id="state1" class="btn-check" name="state" value="0">
@@ -26,10 +26,23 @@
         <label for="id_location">現場名:</label>
         <input type="text" name="location" class="form-control" maxlength="300" id="id_location">
       </p>
-      <input type="submit" class="btn btn-primary" value="送信">
+      <input type="submit" class="btn btn-primary" value="送信" onclick="se_play()">
     </form>
     <a type="button" class="btn btn-secondary mt-5" href="{% url 'User:date-select' %}">別日の入力を確認</a>
   </div>
+  <script>
+    function se_play(){
+      event.preventDefault(); // デフォルトのページ遷移を防ぐ
+  
+      var se = document.getElementById("submit_se");
+      se.currentTime = 0;
+      se.play();
+
+      se.onended = function() {
+        document.getElementById("log_form").submit();
+      };
+    }
+  </script>
   {% if log != None %}
   <script>
     const state_selector = document.getElementsByName('state')[{{log.state | safe}}];
