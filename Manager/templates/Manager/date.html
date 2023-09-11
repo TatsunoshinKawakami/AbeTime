@@ -17,6 +17,16 @@
       </tr>
     </thead>
     {% for date, logs in date_logs %}
+    {% if forloop.counter|divisibleby:'10' %}
+    <tr>
+      <th>
+        {{ date_start.year }}/{{ date_start.month }}/{{ date_start.day }}~{{date_end.year }}/{{ date_end.month }}/{{ date_end.day }}
+      </th>
+      {% for user in users %}
+      <th>{{ user.username }}</th>
+      {% endfor %}
+    </tr>
+    {% endif %}
     <tr>
       <td>{{ date.year }}/{{ date.month }}/{{ date.day }}</td>
       {% for log in logs %}
