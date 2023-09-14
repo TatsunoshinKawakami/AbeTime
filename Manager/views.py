@@ -72,7 +72,20 @@ class ManagerIndexView(LoginRequiredMixin, TemplateView):
             )
         ctx["counts"] = counts
 
-        choices = [(0, "◯"), ("1", "△"), ("2", "✕"), ("3", "---")]
+        state_choices = [(0, "◯"), ("1", "△"), ("2", "✕"), ("3", "---")]
+        location_choices = [
+            ("0", "---"),
+            ("1", "津田建築"),
+            ("2", "ヤマタホーム"),
+            ("3", "笹間建材"),
+            ("4", "松本油店"),
+            ("5", "Bクランプ"),
+            ("6", "多林製作所"),
+            ("7", "湯村工匠"),
+            ("8", "ビルフィール"),
+            ("9", "西尾建設"),
+            ("10", "その他"),
+        ]
         date_logs = []
         for i in range((date_end - date_start).days + 1):
             logs = []
@@ -87,8 +100,18 @@ class ManagerIndexView(LoginRequiredMixin, TemplateView):
                             attrs={"class": "form-control", "style": "font-size: 0.8em"}
                         ),
                         label="",
-                        choices=choices,
+                        choices=state_choices,
                         initial=3,
+                    )
+                    form.fields[
+                        "well_known_location_" + user.username + "_" + str(date_start)
+                    ] = forms.ChoiceField(
+                        widget=forms.widgets.Select(
+                            attrs={"class": "form-control", "style": "font-size: 0.8em"}
+                        ),
+                        label="",
+                        choices=location_choices,
+                        initial=0,
                     )
                     form.fields[
                         "location_" + user.username + "_" + str(date_start)
@@ -108,8 +131,18 @@ class ManagerIndexView(LoginRequiredMixin, TemplateView):
                             attrs={"class": "form-control", "style": "font-size: 0.8em"}
                         ),
                         label="",
-                        choices=choices,
+                        choices=state_choices,
                         initial=log.state,
+                    )
+                    form.fields[
+                        "well_known_location_" + user.username + "_" + str(date_start)
+                    ] = forms.ChoiceField(
+                        widget=forms.widgets.Select(
+                            attrs={"class": "form-control", "style": "font-size: 0.8em"}
+                        ),
+                        label="",
+                        choices=location_choices,
+                        initial=log.well_known_location,
                     )
                     form.fields[
                         "location_" + user.username + "_" + str(date_start)
@@ -148,6 +181,9 @@ class ManagerIndexView(LoginRequiredMixin, TemplateView):
                 state = int(
                     request.POST.get("state_" + user.username + "_" + str(date_start))
                 )
+                well_known_location = int(
+                    request.POST.get("well_known_location_" + user.username + "_" + str(date_start))
+                )
                 location = request.POST.get(
                     "location_" + user.username + "_" + str(date_start)
                 )
@@ -155,7 +191,7 @@ class ManagerIndexView(LoginRequiredMixin, TemplateView):
                     Log.objects.update_or_create(
                         user=user,
                         date=date_start,
-                        defaults={"state": state, "location": location},
+                        defaults={"state": state, "well_known_location": well_known_location, "location": location},
                     )
             date_start = date_start + datetime.timedelta(days=1)
 
@@ -202,7 +238,20 @@ class ManagerDateView(LoginRequiredMixin, TemplateView):
             )
         ctx["counts"] = counts
 
-        choices = [(0, "◯"), ("1", "△"), ("2", "✕"), ("3", "---")]
+        state_choices = [(0, "◯"), ("1", "△"), ("2", "✕"), ("3", "---")]
+        location_choices = [
+            ("0", "---"),
+            ("1", "津田建築"),
+            ("2", "ヤマタホーム"),
+            ("3", "笹間建材"),
+            ("4", "松本油店"),
+            ("5", "Bクランプ"),
+            ("6", "多林製作所"),
+            ("7", "湯村工匠"),
+            ("8", "ビルフィール"),
+            ("9", "西尾建設"),
+            ("10", "その他"),
+        ]
         date_logs = []
         for i in range((date_end - date_start).days + 1):
             logs = []
@@ -217,8 +266,18 @@ class ManagerDateView(LoginRequiredMixin, TemplateView):
                             attrs={"class": "form-control", "style": "font-size: 0.8em"}
                         ),
                         label="",
-                        choices=choices,
+                        choices=state_choices,
                         initial=3,
+                    )
+                    form.fields[
+                        "well_known_location_" + user.username + "_" + str(date_start)
+                    ] = forms.ChoiceField(
+                        widget=forms.widgets.Select(
+                            attrs={"class": "form-control", "style": "font-size: 0.8em"}
+                        ),
+                        label="",
+                        choices=location_choices,
+                        initial=0,
                     )
                     form.fields[
                         "location_" + user.username + "_" + str(date_start)
@@ -238,8 +297,18 @@ class ManagerDateView(LoginRequiredMixin, TemplateView):
                             attrs={"class": "form-control", "style": "font-size: 0.8em"}
                         ),
                         label="",
-                        choices=choices,
+                        choices=state_choices,
                         initial=log.state,
+                    )
+                    form.fields[
+                        "well_known_location_" + user.username + "_" + str(date_start)
+                    ] = forms.ChoiceField(
+                        widget=forms.widgets.Select(
+                            attrs={"class": "form-control", "style": "font-size: 0.8em"}
+                        ),
+                        label="",
+                        choices=location_choices,
+                        initial=log.well_known_location,
                     )
                     form.fields[
                         "location_" + user.username + "_" + str(date_start)
@@ -275,6 +344,9 @@ class ManagerDateView(LoginRequiredMixin, TemplateView):
                 state = int(
                     request.POST.get("state_" + user.username + "_" + str(date_tmp))
                 )
+                well_known_location = int(
+                    request.POST.get("well_known_location_" + user.username + "_" + str(date_tmp))
+                )
                 location = request.POST.get(
                     "location_" + user.username + "_" + str(date_tmp)
                 )
@@ -282,7 +354,7 @@ class ManagerDateView(LoginRequiredMixin, TemplateView):
                     Log.objects.update_or_create(
                         user=user,
                         date=date_tmp,
-                        defaults={"state": state, "location": location},
+                        defaults={"state": state, "well_known_location": well_known_location, "location": location},
                     )
             date_tmp = date_tmp + datetime.timedelta(days=1)
 
@@ -320,10 +392,9 @@ class AbeUserDeleteView(LoginRequiredMixin, FormView):
     def form_valid(self, form):
         if not self.request.user.is_staff:
             return redirect(reverse_lazy("User:index"))
-        
-        user = AbeUser.objects.filter(id=form.cleaned_data['users']).first()
+
+        user = AbeUser.objects.filter(id=form.cleaned_data["users"]).first()
         if user != None:
             user.delete()
 
         return super().form_valid(form)
-    

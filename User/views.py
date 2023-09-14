@@ -36,12 +36,13 @@ class IndexView(LoginRequiredMixin, FormView):
 
     def form_valid(self, form):
         state = form.cleaned_data["state"]
+        well_known_location = form.cleaned_data["well_known_location"]
         location = form.cleaned_data["location"]
 
         Log.objects.update_or_create(
             user=self.request.user,
             date=timezone.now().date(),
-            defaults={"state": state, "location": location},
+            defaults={"state": state, "well_known_location": well_known_location, "location": location},
         )
         return super().form_valid(form)
 
@@ -74,6 +75,7 @@ class DateView(LoginRequiredMixin, FormView):
         )
 
         state = form.cleaned_data["state"]
+        well_known_location = form.cleaned_data["well_known_location"]
         location = form.cleaned_data["location"]
         this_date = datetime.strptime(
             str(self.kwargs.get("year"))
@@ -87,7 +89,7 @@ class DateView(LoginRequiredMixin, FormView):
         Log.objects.update_or_create(
             user=self.request.user,
             date=this_date,
-            defaults={"state": state, "location": location},
+            defaults={"state": state, "well_known_location": well_known_location, "location": location},
         )
 
         return super().form_valid(form)

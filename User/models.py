@@ -12,6 +12,8 @@ class Log(models.Model):
     state = models.IntegerField(default=0)
     location = models.CharField(max_length=300, null=True, blank=True)
     user = models.ForeignKey(AbeUser, on_delete=models.CASCADE)
+    well_known_location = models.IntegerField(default=0)
+
 
     class Meta:
         constraints = [
