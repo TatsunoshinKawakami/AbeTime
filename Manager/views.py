@@ -74,19 +74,7 @@ class ManagerIndexView(LoginRequiredMixin, TemplateView):
         ctx["counts"] = counts
 
         state_choices = [(0, "◯"), ("1", "△"), ("2", "✕"), ("3", "---")]
-        location_choices = [
-            ("0", "---"),
-            ("1", "津田建築"),
-            ("2", "ヤマタホーム"),
-            ("3", "笹間建材"),
-            ("4", "松本油店"),
-            ("5", "Bクランプ"),
-            ("6", "多林製作所"),
-            ("7", "湯村工匠"),
-            ("8", "ビルフィール"),
-            ("9", "西尾建設"),
-            ("10", "その他"),
-        ]
+        location_choices = [(location.id, location.location_name) for location in WellKnownLocation.objects.all().order_by('deletibility')]
         date_logs = []
         for i in range((date_end - date_start).days + 1):
             logs = []
@@ -240,19 +228,7 @@ class ManagerDateView(LoginRequiredMixin, TemplateView):
         ctx["counts"] = counts
 
         state_choices = [(0, "◯"), ("1", "△"), ("2", "✕"), ("3", "---")]
-        location_choices = [
-            ("0", "---"),
-            ("1", "津田建築"),
-            ("2", "ヤマタホーム"),
-            ("3", "笹間建材"),
-            ("4", "松本油店"),
-            ("5", "Bクランプ"),
-            ("6", "多林製作所"),
-            ("7", "湯村工匠"),
-            ("8", "ビルフィール"),
-            ("9", "西尾建設"),
-            ("10", "その他"),
-        ]
+        location_choices = [(location.pk, location.location_name) for location in WellKnownLocation.objects.all().order_by('deletibility')]
         date_logs = []
         for i in range((date_end - date_start).days + 1):
             logs = []

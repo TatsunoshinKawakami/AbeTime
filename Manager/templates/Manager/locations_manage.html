@@ -7,14 +7,16 @@
       <tr>
         <td>{{location.location_name}}</td>
         <td>
+          {% if location.deletibility %}
           <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal-{{location.id}}">削除</button>
           {% include "Manager/location_delete.html" with location=location %}
+          {% endif %}
         </td>
       </tr>
       {% endfor %}
       <tr>
         <td>{{form.location_name}}</td>
-        <td><input type="submit" class="btn btn-primary" value="追加"></td>
+        <td><input type="submit" class="btn btn-primary" value="追加" /></td>
       </tr>
     </tbody>
   </table>
