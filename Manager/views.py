@@ -1,6 +1,6 @@
 from typing import Any, Dict
 from django import http
-from django.http import HttpResponse
+from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
@@ -16,8 +16,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils import timezone
 from django import forms
 
+from .models import WellKnownLocation
 from User.models import Log, AbeUser
-from .forms import SignupForm, DeleteUserSelectForm
+from .forms import SignupForm, DeleteUserSelectForm, LocationAddForm
 
 import datetime
 from dateutil.relativedelta import relativedelta
@@ -368,6 +369,46 @@ class ManagerDateView(LoginRequiredMixin, TemplateView):
                 },
             )
         )
+    
+
+class LocationsManageView(LoginRequiredMixin, FormView):
+    template_name = "Manager/locations_manage.html"
+    form_class = LocationAddForm
+    success_url = reverse_lazy("Manager:locations_manage")
+
+    def get(self, request, *args, **kwargs):
+        if not self.request.user.is_staff:
+            return redirect(reverse_lazy("User:index"))
+
+        return super().get(request, *args, **kwargs)
+    
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+
+        locations = WellKnownLocation.objects.all()
+        ctx['locations'] = locations
+
+        return ctx
+
+    def form_valid(self, form):
+        if not self.request.user.is_staff:
+            return redirect(reverse_lazy("User:index"))
+        
+        location_name = form.cleaned_data['location_name']
+        WellKnownLocation.objects.update_or_create(location_name=location_name, defaults={'location_name': location_name})
+
+        return super().form_valid(form)
+    
+
+class LocationDeleteView(LoginRequiredMixin, DeleteView):
+    model = WellKnownLocation
+    success_url = reverse_lazy('Manager:locations_manage')
+
+    def form_valid(self, form):
+        if not self.request.user.is_staff:
+            return redirect(reverse_lazy('User:index'))
+        
+        return super().form_valid(form)
 
 
 class AbeSignUpView(LoginRequiredMixin, CreateView):

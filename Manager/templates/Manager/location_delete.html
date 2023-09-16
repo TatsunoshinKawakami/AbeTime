@@ -1,0 +1,19 @@
+<div class="modal fade" tabindex="-1" role="dialog" id="deleteModal-{{location.id}}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">データの削除</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>削除すると元に戻すことはできません</p>
+      </div>
+      <div class="modal-footer">
+        <form method="POST" action="{% url 'Manager:location_delete' location.id %}">{% csrf_token %}
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
+          <button type="submit" class="btn btn-danger">削除</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

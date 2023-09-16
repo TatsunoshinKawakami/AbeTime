@@ -4,6 +4,9 @@ from django.forms.utils import ErrorList
 from User.models import AbeUser
 from django.contrib.auth.forms import UserCreationForm
 
+class LocationAddForm(forms.Form):
+    location_name = forms.CharField(widget=forms.widgets.TextInput(attrs={'class': 'form-control'}))
+        
 class SignupForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

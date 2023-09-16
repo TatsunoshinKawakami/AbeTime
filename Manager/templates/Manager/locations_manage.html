@@ -1,0 +1,22 @@
+{% extends 'Manager/base.html' %} {% block content %}
+<form class="d-flex px-2 mt-2" method="post">
+  {% csrf_token %}
+  <table class="table mx-auto">
+    <tbody>
+      {% for location in locations %}
+      <tr>
+        <td>{{location.location_name}}</td>
+        <td>
+          <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal-{{location.id}}">削除</button>
+          {% include "Manager/location_delete.html" with location=location %}
+        </td>
+      </tr>
+      {% endfor %}
+      <tr>
+        <td>{{form.location_name}}</td>
+        <td><input type="submit" class="btn btn-primary" value="追加"></td>
+      </tr>
+    </tbody>
+  </table>
+</form>
+{% endblock %}

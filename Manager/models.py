@@ -1,3 +1,4 @@
 from django.db import models
 
-# Create your models here.
+class WellKnownLocation(models.Model):
+    location_name = models.CharField(max_length=300, unique=True)
