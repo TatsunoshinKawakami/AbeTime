@@ -25,7 +25,7 @@
     </tr>
     {% endif %}
     <tr>
-      <td>{{ date.year }}/{{ date.month }}/{{ date.day }}</td>
+      <td>{{ date.0.year }}/{{ date.0.month }}/{{ date.0.day }}({{date.1}})</td>
       {% for log in logs %}
       <td>
         {% for field in log %}

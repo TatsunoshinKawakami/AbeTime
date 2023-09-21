@@ -76,6 +76,7 @@ class ManagerIndexView(LoginRequiredMixin, TemplateView):
         state_choices = [(0, "◯"), ("1", "△"), ("2", "✕"), ("3", "---")]
         location_choices = [(location.id, location.location_name) for location in WellKnownLocation.objects.all().order_by('deletibility')]
         date_logs = []
+        week_day_jp = ['月','火','水','木','金','土','日']
         for i in range((date_end - date_start).days + 1):
             logs = []
             for user in users:
@@ -144,7 +145,7 @@ class ManagerIndexView(LoginRequiredMixin, TemplateView):
                         initial=log.location,
                     )
                     logs.append(form)
-            date_logs.append((date_start, logs))
+            date_logs.append(((date_start,week_day_jp[date_start.weekday()]), logs))
             date_start = date_start + datetime.timedelta(days=1)
         ctx["date_logs"] = date_logs
 
@@ -229,6 +230,7 @@ class ManagerDateView(LoginRequiredMixin, TemplateView):
 
         state_choices = [(0, "◯"), ("1", "△"), ("2", "✕"), ("3", "---")]
         location_choices = [(location.pk, location.location_name) for location in WellKnownLocation.objects.all().order_by('deletibility')]
+        week_day_jp = ['月','火','水','木','金','土','日']
         date_logs = []
         for i in range((date_end - date_start).days + 1):
             logs = []
@@ -298,7 +300,7 @@ class ManagerDateView(LoginRequiredMixin, TemplateView):
                         initial=log.location,
                     )
                     logs.append(form)
-            date_logs.append((date_start, logs))
+            date_logs.append(((date_start,week_day_jp[date_start.weekday()]), logs))
             date_start = date_start + datetime.timedelta(days=1)
         ctx["date_logs"] = date_logs
 
